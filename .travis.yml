@@ -1,15 +1,19 @@
 language: node_js
 node_js:
-  - "node"
+- node
 deploy:
-  - skip_cleanup: true
-    provider: script
-    script: npm run deploy
-    on:
-      branch: master
-  - skip_cleanup: true
-    provider: script
-    script: npm run deploy-branch
-    on:
-      all_branches: true
-      condition: '"$TRAVIS_BRANCH" != "master" && "$TRAVIS_BRANCH" != "gh-pages"'
+- skip_cleanup: true
+  provider: script
+  script: npm run deploy
+  on:
+    branch: master
+- skip_cleanup: true
+  provider: script
+  script: npm run deploy-branch
+  on:
+    all_branches: true
+    condition: '"$TRAVIS_BRANCH" != "master" && "$TRAVIS_BRANCH" != "gh-pages"'
+env:
+  global:
+  - secure: PyTdyclHEN4A1n1oIocqsYy5Bfkxwzb1PblM1bGW5toGMT2e91YzZy0TkupMtqaMw9VeIv01Oqh370XZdQgV1HbwuJxW4MJ7ORilT5wN6LXFcrXMcmQ3k5mtY6OJKhknIsxOwXfy0O6FWSm1SEQtzBa7lXN1Qu6D0+/5Gb8/xR/TXqyUSVZ41656P6PGNAJ3wT3QqXa6Up6+Mtx0sH4OruomtCXU81Fxg5qX2YAjYJY5hz3J1QukgTHmh5RbumFxIFEp2ZHFFvFtg6hqbuc62oV/T37F+iCnvAuYA6t9c5wMJW182Citqb5U2CK2YAxs2DOdVfPlWTdUTMtIsyN6fWyB56ur+8HKkbYk7EiSXTVhU1lqVWbTClJJxCnV3aMj4kKbu74xr9x6M5Bk6rIZWT4BP50XBJOZ4vtz+JKSc4FFN0kXTpUXif3ROnuVRKC8LC0+vzffUVGe/beIM+CSygKokDMEt5LGxpuox6yJ7GZ4LUqk45j3J4h4/wx7ZVaEGmnrvyx+fTP/y29dMWDaFYKO11AAbV0zvV7C34Td09AYw20IO6D28D7Mr27HBCDzn5XVGxFav/PG0uTAdCP21YYSglxSVWYAvwmehnouaiBUD1fQbXqhl3jAUrGtVH0fiAoYRfLuRLn5Yktalh3Ki+131SPMymmMiVfK0E0sXWw=
+  - secure: A9cFKG8YBf0L4X4a4rjqXWsnScGQHgutzeaoZbqe9CktBSPGJ81gzW+LV19jtO2U0U4EXoibTlY2d0fRawclcEgqR64IUPUP2QMf7DeeJCB9Dd8+89CKsLOQz+PU7hYwxxo2RsKg9llCAHSnHUsoiCTYMWfPWfka1iW5rgP3gusKcVr15eRDIp2ji4HWw+qaP1Ia/zo+4/6YQhE3BP9BJMA3dcpY3lxhpLpruGj8FR1tSPz3PpgCfQj4dQOTnqM/UXXck8SsgUBTx8WPph38Cih1xY6XSnnSLnVfAavUbd80UqE2/KmsfoapzybLrSNKwewRPqtGDp0jUT959lLzaTbb/FSIELbqX4xeQiRF42Y7fXDhGUl0N9U0ZQ29HgHpOFqKXyAw2c4VSJVqd0ZCkCtIPEX3hHn9Ayp1cVl+vyJDuQVraAQDO480HaexsBgGuPMHUDoiTY8SEd62YXu3F8tNNzyZ+bvYIyPKzcAngLrY4bWzVJEB1xJfW2wuU0Mn8NA0T3VgSHnuFsh0+s6jqhrpC11CuP6CQPF3/xXu2txw56ln+oWgy17QY5GMCeR6LVV9ReTwDoHbRRalw/ljwTJNaQp3XT4QhsG1NtsuCKhUunHwOuuOaNj+YkwAdsDr60Faj1ZP1RnvypdLIOy8URj4h+HMcYHX+8oM7IW57Fk=
