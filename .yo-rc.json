@@ -1,0 +1,11 @@
+{
+  "generator-openapi-repo": {
+    "importExistingSpec": true,
+    "importedSpec": "swagger.yaml",
+    "name": "Employee",
+    "repo": "iatec-docs/EmployeeApi",
+    "splitSpec": false,
+    "samples": true,
+    "installSwaggerUI": true
+  }
+}

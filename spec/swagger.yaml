@@ -1,0 +1,689 @@
+swagger: '2.0'
+info:
+  description: IATec Employee Portal API
+  version: "1.0.0-preview-7"
+  title: Employee Portal API
+  contact:
+    email: andre.guilherme@iatec.com
+schemes:
+ - https
+# host: 'ws-rh-dev.sdasystems.org'
+# basePath: '/preview'
+tags:
+  - name: Paychecks
+    description: "Paycheck-related methods"
+  - name: Reimbursement
+    description: "Reimbursement-related methods"
+  - name: Vacation
+    description: "Receipt-related methods"
+  - name: Profile
+    description: "Manage the employee's profile"
+paths:
+  '/paychecks/standard':
+    get:
+      tags: 
+        - Paychecks
+      summary: 'List standard paychecks'
+      description: 'Get list of available standard paychecks'
+      operationId: listStandardPaychecks
+      produces:
+        - "application/json"
+      parameters:
+        - name: count
+          in: query
+          description: The maximum number of items the search will bring.
+          type: integer  
+        - name: maxperiod
+          in: query
+          description: Limit the search to the specified period of after. The period format is YYYYMM
+          type: integer
+      responses:
+        200:
+          description: 'Success'
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/PaycheckListingItem'
+        400:
+          description: 'Wrong parameters'
+  '/paychecks/13th':
+    get:
+      tags: 
+        - Paychecks
+      summary: 'List 13th paychecks'
+      description: 'Get list of available 13th paychecks'
+      operationId: list13thPaychecks
+      produces:
+        - "application/json"
+      parameters:
+        - name: count
+          in: query
+          description: The maximum number of items the search will bring.
+          type: integer
+        - name: maxperiod
+          in: query
+          description: Limit the search to the specified period of after. The period format is YYYYMM
+          type: integer
+      responses:
+        200:
+          description: 'Success'
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/PaycheckListingItem'
+        400:
+          description: 'Wrong parameters'
+  '/paychecks/standard/{period}':
+    parameters:
+      - name: period
+        in: path
+        required: true
+        type: integer
+    get:
+      tags: 
+        - Paychecks
+      summary: 'Get standard paycheck'
+      description: 'Get the standard paycheck for a specific period'
+      operationId: getPaycheck
+      produces:
+        - "application/json"
+      parameters:
+        - name: includeInternalAccount
+          in: query
+          type: boolean
+          default: false
+      responses:
+        200:
+          description: 'Success'
+          schema:
+            $ref: '#/definitions/Paycheck'
+        400:
+          description: 'Wrong parameters'
+        404:
+          description: 'Paycheck not found'
+  '/paychecks/13th/{period}':
+    parameters:
+      - name: period
+        in: path
+        required: true
+        type: integer
+    get:
+      tags: 
+        - Paychecks
+      summary: 'Get 13th paycheck'
+      description: 'Get the 13th paycheck for a specific period'
+      operationId: get13thPaycheck
+      produces:
+        - "application/json"
+      parameters:
+        - name: includeInternalAccount
+          in: query
+          type: boolean
+          default: false
+      responses:
+        200:
+          description: 'Success'
+          schema:
+            $ref: '#/definitions/Paycheck'
+        400:
+          description: 'Wrong parameters'
+        404:
+          description: 'Paycheck not found'
+  
+  '/reimbursement/monthly-declarations':
+    get:
+      tags: 
+        - Reimbursement
+      summary: 'List monthly declarations'
+      description: 'Get list of available monthly declarations'
+      operationId: listMonthlyDeclarations
+      produces:
+        - "application/json"
+      parameters:
+        - name: count
+          in: query
+          description: The maximum number of items the search will bring.
+          type: integer
+        - name: maxperiod
+          in: query
+          description: Limit the search to the specified period of after. The period format is YYYYMM
+          type: integer
+      responses:
+        200:
+          description: 'Success'
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/MonthlyDeclarationListingItem'
+              
+        400:
+          description: 'Wrong parameters'
+  '/reimbursement/monthly-declarations/{period}':
+    parameters:
+      - name: period
+        in: path
+        required: true
+        type: integer
+    get:
+      tags: 
+        - Reimbursement
+      summary: 'Get monthly declaration'
+      description: 'Get a specific reimbursement monthly declaration'
+      operationId: getMonthlyDeclaration
+      produces:
+        - "application/json"
+      responses:
+        200:
+          description: 'Success'
+          schema:
+            $ref: '#/definitions/MonthlyDeclaration'
+        400:
+          description: 'Wrong parameters'
+        404:
+          description: 'Reimbursement not found'
+
+  '/vacation/receipts':
+    get:
+      tags: 
+        - Vacation
+      summary: 'List vacation receipts'
+      description: 'Get a list of available vacation receipts'
+      operationId: listVacationReceipts
+      produces:
+        - "application/json"
+      parameters:
+        - name: count
+          in: query
+          description: The maximum number of items the search will bring.
+          type: integer
+          required: true
+        - name: maxperiod
+          in: query
+          type: integer
+          description: Limit the search to the specified period or after.
+          required: true
+      responses:
+        200:
+          description: 'Success'
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/VacationReceiptListingItem'
+        400:
+          description: 'Wrong parameters'
+  '/vacation/receipts/{period}':
+    parameters:
+      - name: period
+        in: path
+        required: true
+        type: integer
+    get:
+      tags: 
+        - Vacation
+      summary: 'Get vacation receipt'
+      description: 'Get the vacation receipt for a specific period'
+      operationId: getVacationReceipt
+      produces:
+        - "application/json"
+      responses:
+        200:
+          description: 'Success'
+          schema:
+            $ref: '#/definitions/VacationReceipt'
+        400:
+          description: 'Wrong parameters'
+        404:
+          description: 'Paycheck not found'
+ 
+  '/reports/income':
+    get:
+      tags: 
+        - Reports
+      summary: 'List income reports'
+      description: 'Get a list of all available income reports'
+      operationId: listIncomeReports
+      produces:
+        - "application/json"
+      responses:
+        200:
+          description: 'Success'
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/IncomeReportListingItem'
+        400:
+          description: 'Invalid parameters'
+  '/reports/income/{year}':
+    parameters: 
+      - name: year
+        in: path
+        required: true
+        type: integer
+    get:
+      tags: 
+        - Reports
+      summary: 'Get income report'
+      description: 'Get the income report of a year'
+      operationId: getIncomeReport
+      produces:
+        - "application/json"
+      responses:
+        200:
+          description: 'Success'
+          schema:
+            $ref: '#/definitions/IncomeReport'
+        400:
+          description: 'Wrong parameters'
+        404:
+          description: 'Report not found'
+          
+  '/reports/tithe':
+    get:
+      tags:
+        - Reports
+      summary: 'List tithe reports'
+      operationId: listTitheReports
+      produces:
+        - "application/json"
+      responses:
+        200:
+          description: 'Success'
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/TitheReportListingItem'
+  '/reports/tithe/{period}':
+    parameters:
+      - name: period
+        in: path
+        required: true
+        type: integer
+    get:
+      tags: 
+        - Reports
+      summary: 'Get tithe report'
+      description: 'Get the tithe report for a specific period'
+      operationId: getTitheReport
+      produces:
+        - "application/json"
+      responses:
+        200:
+          description: 'Success'
+          schema:
+            $ref: '#/definitions/TitheReport'
+        400:
+          description: 'Wrong parameters'
+        404:
+          description: 'Report not found'
+          
+  '/profile/contact-info':
+    get:
+      tags:
+        - Profile
+      summary: 'Get contact info'
+      description: "Get the employee's contact info"
+      operationId: getAccountInfo
+      produces:
+        - "application/json"
+      responses:
+        200:
+          description: 'Success'
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/ContactInfo'
+        400:
+          description: 'Invalid parameters'
+    put:
+      tags:
+        - Profile
+      summary: 'Set contact info'
+      description: "Set the employee's contact info"
+      operationId: setAccountInfo
+      parameters: 
+        - in: body
+          name: contactInfo
+          schema:
+            $ref: '#/definitions/ContactInfo'
+      produces:
+        - "application/json"
+      responses:
+        201:
+          description: 'Success'
+        400:
+          description: 'Invalid parameters'
+definitions:
+  
+  Paycheck:
+    type: object
+    properties:
+      entity:
+        $ref: '#/definitions/Entity'
+      employee:
+        $ref: '#/definitions/Employee'
+      period:
+        type: string
+      amounts:
+        type: array
+        items:
+          $ref: '#/definitions/AmountsEntry'
+      depositInfo:
+        type: string
+      aditionalInfo:
+        type: array
+        items:
+          type: string
+      baseSalary:
+        type: number
+        format: double
+      inssBalance:
+        type: number
+        format: double
+      fgtsBase:
+        type: number
+        format: double
+      currentMonthFgts:
+        type: number
+        format: double
+      grossIrrfBase:
+        type: number
+        format: double
+      irrfDeduction:
+        type: number
+        format: double
+      netIrrfBase:
+        type: number
+        format: double
+      inssClass:
+        type: number
+        format: double
+      inssValueDescription:
+        type: string
+      inssBase:
+        type: number
+        format: double
+      totalEarnings:
+        type: number
+        format: double
+      totalDiscounts:
+        type: number
+        format: double
+      netValue:
+        type: number
+        format: double
+      internalAccountInfo:
+        $ref: '#/definitions/InternalAccount'
+  Entity:
+    type: object
+    properties:
+      code:
+        type: string
+      name:
+        type: string
+      document:
+        type: string
+  Employee:
+    type: object
+    properties:
+      code:
+        type: string
+      name:
+        type: string
+      position:
+        type: string
+      document:
+        $ref: '#/definitions/EmployeeDocument'
+        
+      address:
+        type: string
+      department:
+        type: string
+      isReligious:
+        type: boolean
+  EmployeeDocument:
+    type: object
+    properties:
+      cbo: 
+        type: string
+      number: 
+        type: string
+      series: 
+        type: string
+
+  VacationReceipt:
+    type: object
+    properties:
+      employeeName:
+        type: string
+      departmentName:
+        type: string
+      amounts:
+        type: array
+        items:
+          $ref: '#/definitions/AmountsEntry'
+      totalEarnings:
+        type: number
+        format: double
+      totalDiscounts:
+        type: number
+        format: double
+      netValue:
+        type: number
+        format: double
+      acquisitionPeriod:
+        type: object
+        properties:
+          begin:
+            type: string
+            format: date
+          end:
+            type: string
+            format: date
+      vacationPeriod:
+        type: object
+        properties:
+          begin:
+            type: string
+            format: date
+          end:
+            type: string
+            format: date
+      allowancePeriod:
+        type: object
+        properties:
+          begin:
+            type: string
+            format: date
+          end:
+            type: string
+            format: date
+  AmountsEntry:
+    type: object 
+    properties:
+      code:
+        type: string
+      description:
+        type: string
+      valueHa:
+        type: number
+        format: double
+      reference:
+        type: number
+        format: double
+      earning:
+        type: number
+        format: double
+      discount:
+        type: number
+        format: double
+  
+  InternalAccount:
+    type: object
+    properties:
+      entries:
+        type: array
+        items:
+          $ref: '#/definitions/InternalAccountEntry'
+  InternalAccountEntry:
+    type: object
+    properties:
+      day:
+        type: integer
+      code:
+        type: string
+      description:
+        type: string
+      value:
+        type: number
+        format: double
+        
+  MonthlyDeclarationLite:
+    type: object
+    properties:
+      remarks:
+        type: string
+      value:
+        type: object
+  MonthlyDeclaration:
+    allOf:
+      - type: object
+        properties:
+          entries:
+            type: array
+            items:
+              $ref: '#/definitions/MonthlyDeclarationEntry'
+      - $ref: '#/definitions/MonthlyDeclarationLite'
+  MonthlyDeclarationEntry:
+    type: object
+    properties:
+      allowances:
+        type: string  
+  
+  IncomeReport:
+    type: object
+    properties:
+      remarks:
+        type: string
+  TitheReport:
+    type: object
+    properties:
+      entries:
+        type: array
+        items:
+          $ref: '#/definitions/TitheReportEntry'
+      total:
+        type: number
+      titheValue:
+        type: number
+      suggestedOfferingValue:
+        type: number
+  TitheReportEntry:
+    type: object
+    properties:
+      code:
+        type: string
+      description:
+        type: string
+      value:
+        type: number
+  
+  BaseListingItem:
+    type: object
+    properties:
+      url:
+        type: string
+        format: url
+      date:
+        type: string
+        format: date
+  PaycheckListingItem:
+    allOf:
+      - $ref: '#/definitions/BaseListingItem'
+      - type: object
+        properties:
+          period:
+            type: integer
+          value:
+            type: number
+            format: double
+  MonthlyDeclarationListingItem:
+    allOf:
+      - $ref: '#/definitions/BaseListingItem'
+      - type: object
+        properties:
+          period:
+            type: integer
+          totalAmount:
+            type: number
+            format: double
+  VacationReceiptListingItem:
+    allOf:
+      - $ref: '#/definitions/BaseListingItem'
+      - type: object
+        properties:
+          period:
+            type: integer
+          grossValue:
+            type: number
+          netValue:
+            type: number
+  IncomeReportListingItem:
+    allOf:
+      - $ref: '#/definitions/BaseListingItem'
+      - type: object
+        properties:
+          year:
+            type: integer
+          value:
+            type: number
+            format: double
+  TitheReportListingItem:
+    allOf:
+      - $ref: '#/definitions/BaseListingItem'
+      - type: object
+        properties:
+          period:
+            type: integer
+          titheValue:
+            type: number
+            format: double
+  
+  ContactInfo:
+    type: object
+    properties:
+      address:
+        $ref: '#/definitions/ContactInfoAddress'
+      phones:
+        type: array
+        items:
+          $ref: '#/definitions/ContactInfoPhone'
+      email:
+        type: string
+  ContactInfoAddress:
+    type: object
+    properties:
+      line1:
+        type: string
+      number:
+        type: string
+      line2:
+        type: string
+      neighborhood:
+        type: string
+      zip:
+        type: string
+      city_state:
+        type: string
+  ContactInfoPhone:
+    type: object
+    properties:
+      prefix:
+        type: string
+      number:
+        type: string
+      additionalInfo:
+        type: string
+    
+# Added by API Auto Mocking Plugin
+host: virtserver.swaggerhub.com
+basePath: /iatec/Employee/1.0.0-preview-1
