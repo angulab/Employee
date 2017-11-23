@@ -1,14 +1,14 @@
 swagger: '2.0'
 info:
   description: IATec Employee Portal API
-  version: "1.0.0-preview-7"
+  version: "1.0.0-preview-9"
   title: Employee Portal API
   contact:
     email: andre.guilherme@iatec.com
 schemes:
  - https
-# host: 'ws-rh-dev.sdasystems.org'
-# basePath: '/preview'
+host: 'ws-rh-online-dev.sdasystems.org'
+basePath: '/'
 tags:
   - name: Paychecks
     description: "Paycheck-related methods"
@@ -322,16 +322,14 @@ paths:
         - Profile
       summary: 'Get contact info'
       description: "Get the employee's contact info"
-      operationId: getAccountInfo
+      operationId: getContactInfo
       produces:
         - "application/json"
       responses:
         200:
           description: 'Success'
           schema:
-            type: array
-            items:
-              $ref: '#/definitions/ContactInfo'
+            $ref: '#/definitions/ContactInfo'
         400:
           description: 'Invalid parameters'
     put:
@@ -339,7 +337,7 @@ paths:
         - Profile
       summary: 'Set contact info'
       description: "Set the employee's contact info"
-      operationId: setAccountInfo
+      operationId: setContactInfo
       parameters: 
         - in: body
           name: contactInfo
@@ -356,6 +354,18 @@ definitions:
   
   Paycheck:
     type: object
+    required:
+      - baseSalary
+      - inssBalance
+      - fgtsBase
+      - currentMonthFgts
+      - grossIrrfBase
+      - irrfDeduction
+      - netIrrfBase
+      - inssClass
+      - inssBase
+      - totalEarnings
+      - netValue
     properties:
       entity:
         $ref: '#/definitions/Entity'
@@ -369,7 +379,7 @@ definitions:
           $ref: '#/definitions/AmountsEntry'
       depositInfo:
         type: string
-      aditionalInfo:
+      additionalInfo:
         type: array
         items:
           type: string
@@ -590,9 +600,9 @@ definitions:
   BaseListingItem:
     type: object
     properties:
-      url:
-        type: string
-        format: url
+#      url:
+#        type: string
+#        format: url
       date:
         type: string
         format: date
@@ -653,26 +663,28 @@ definitions:
     properties:
       address:
         $ref: '#/definitions/ContactInfoAddress'
-      phones:
-        type: array
-        items:
-          $ref: '#/definitions/ContactInfoPhone'
+      homePhone:
+        $ref: '#/definitions/ContactInfoPhone'
+      mobilePhone:
+        $ref: '#/definitions/ContactInfoPhone'
       email:
         type: string
   ContactInfoAddress:
     type: object
     properties:
-      line1:
+      street:
         type: string
       number:
         type: string
-      line2:
+      supplement:
         type: string
       neighborhood:
         type: string
       zip:
         type: string
-      city_state:
+      city:
+        type: string
+      state:
         type: string
   ContactInfoPhone:
     type: object
@@ -683,7 +695,3 @@ definitions:
         type: string
       additionalInfo:
         type: string
-    
-# Added by API Auto Mocking Plugin
-host: virtserver.swaggerhub.com
-basePath: /iatec/Employee/1.0.0-preview-1
